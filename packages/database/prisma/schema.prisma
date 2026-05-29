@@ -155,7 +155,7 @@ model User {
   stockMovements StockMovement[]
   notifications  Notification[]
 
-  @@unique([tenantId, email]) 
+  @@unique([tenantId, email])
   @@index([tenantId])
   @@index([tenantId, deletedAt])
 }
@@ -379,7 +379,6 @@ model Product {
   slug        String
   description String? @db.Text
 
-  // Changed Float to Decimal
   purchasePrice Decimal? @db.Decimal(10, 2)
   regularPrice  Decimal? @db.Decimal(10, 2)
   salePrice     Decimal  @db.Decimal(10, 2)
@@ -412,7 +411,6 @@ model ProductVariant {
   sku       String?
   barcode   String?
 
-  // Changed Float to Decimal
   purchasePrice Decimal? @db.Decimal(10, 2)
   regularPrice  Decimal? @db.Decimal(10, 2)
   salePrice     Decimal? @db.Decimal(10, 2)
@@ -516,7 +514,6 @@ model Order {
   orderNumber String
   couponId    String?
 
-  // Changed Float to Decimal
   subTotal       Decimal @db.Decimal(12, 2)
   shippingFee    Decimal @default(0) @db.Decimal(10, 2)
   tax            Decimal @default(0) @db.Decimal(10, 2)
@@ -564,8 +561,8 @@ model OrderItem {
   sku               String?
   variantAttributes Json?
 
-  quantity   Int
-  // Changed Float to Decimal
+  quantity Int
+
   unitPrice  Decimal @db.Decimal(10, 2)
   totalPrice Decimal @db.Decimal(12, 2)
 
@@ -577,18 +574,18 @@ model OrderItem {
 }
 
 model PaymentTransaction {
-  id             String    @id @default(uuid())
+  id             String  @id @default(uuid())
   tenantId       String
-  orderId        String    @unique
+  orderId        String  @unique
   provider       String
   transactionRef String?
   screenshotUrl  String?
-  // Changed Float to Decimal
-  amount         Decimal   @db.Decimal(12, 2)
-  status         String    @default("PENDING")
-  adminNote      String?
-  verifiedAt     DateTime?
-  createdAt      DateTime  @default(now())
+
+  amount     Decimal   @db.Decimal(12, 2)
+  status     String    @default("PENDING")
+  adminNote  String?
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   order  Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -599,12 +596,12 @@ model PaymentTransaction {
 // --- Marketing & Loyalty ---
 
 model Coupon {
-  id                String    @id @default(uuid())
-  tenantId          String
-  code              String
-  description       String?
-  discountType      String
-  // Changed Float to Decimal
+  id           String  @id @default(uuid())
+  tenantId     String
+  code         String
+  description  String?
+  discountType String
+
   discountValue     Decimal   @db.Decimal(10, 2)
   minOrderAmount    Decimal   @default(0) @db.Decimal(10, 2)
   maxDiscountAmount Decimal?  @db.Decimal(10, 2)
@@ -624,11 +621,11 @@ model Coupon {
 }
 
 model Promotion {
-  id            String    @id @default(uuid())
-  tenantId      String
-  name          String
-  discountType  String
-  // Changed Float to Decimal
+  id           String @id @default(uuid())
+  tenantId     String
+  name         String
+  discountType String
+
   discountValue Decimal   @db.Decimal(10, 2)
   applyTo       String
   targetIds     Json?
@@ -661,10 +658,10 @@ model Banner {
 }
 
 model LoyaltySetting {
-  id             String   @id @default(uuid())
-  tenantId       String   @unique
-  isEnable       Boolean  @default(false)
-  // Changed Float to Decimal
+  id       String  @id @default(uuid())
+  tenantId String  @unique
+  isEnable Boolean @default(false)
+
   earnRate       Decimal  @db.Decimal(10, 2)
   redemptionRate Decimal  @db.Decimal(10, 2)
   updatedAt      DateTime @updatedAt
@@ -712,12 +709,12 @@ model Supplier {
 }
 
 model PurchaseOrder {
-  id             String    @id @default(uuid())
-  tenantId       String
-  supplierId     String
-  branchId       String
-  poNumber       String    @unique
-  // Changed Float to Decimal
+  id         String @id @default(uuid())
+  tenantId   String
+  supplierId String
+  branchId   String
+  poNumber   String @unique
+
   totalAmount    Decimal   @db.Decimal(12, 2)
   paymentStatus  String    @default("UNPAID")
   shippingStatus String    @default("PENDING")
@@ -739,8 +736,8 @@ model PurchaseOrderItem {
   productId       String
   variantId       String?
   quantity        Int
-  // Changed Float to Decimal
-  costPrice       Decimal @db.Decimal(10, 2)
+
+  costPrice Decimal @db.Decimal(10, 2)
 
   purchaseOrder PurchaseOrder   @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
   product       Product         @relation(fields: [productId], references: [id], onDelete: Restrict)
@@ -794,12 +791,12 @@ model StockMovement {
 }
 
 model StockBatch {
-  id                String    @id @default(uuid())
-  tenantId          String
-  branchId          String
-  variantId         String
-  batchNumber       String?
-  // Changed Float to Decimal
+  id          String  @id @default(uuid())
+  tenantId    String
+  branchId    String
+  variantId   String
+  batchNumber String?
+
   costPrice         Decimal   @db.Decimal(10, 2)
   initialQuantity   Int
   remainingQuantity Int
@@ -820,13 +817,13 @@ model StockBatch {
 // ==========================================
 
 model ReturnRequest {
-  id           String   @id @default(uuid())
+  id           String @id @default(uuid())
   tenantId     String
   orderId      String
   customerId   String
-  returnNumber String   @unique
-  status       String   @default("PENDING")
-  // Changed Float to Decimal
+  returnNumber String @unique
+  status       String @default("PENDING")
+
   refundAmount Decimal  @default(0) @db.Decimal(10, 2)
   customerNote String?
   createdAt    DateTime @default(now())
