@@ -4,7 +4,13 @@
     "moduleResolution": "bundler",
     "target": "ES2023",
     "strict": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "types": ["node"],
+    "rootDir": ".",
+    "outDir": "dist",
     "esModuleInterop": true,
     "ignoreDeprecations": "6.0"
-  }
+  },
+   "include": ["src", "prisma.config.ts"]
 }
